@@ -1,0 +1,17 @@
+CC = g++
+FLAGS = -Wall -Wextra -Werror -std=c++11
+HELPER = tests-main.o
+
+
+all: test-basic
+
+$(HELPER): tests-main.cpp catch.hpp
+	$(CC) -o $@ -c tests-main.cpp $(FLAGS)
+
+
+.PHONY: clean clean-all
+clean:
+	rm -f
+
+clean-all: clean
+	rm -f $(HELPER)
