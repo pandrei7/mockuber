@@ -3,7 +3,7 @@ FLAGS = -Wall -Wextra -Werror -std=c++11
 HELPER = tests_main.o
 
 
-all: test-basic
+all:
 
 $(HELPER): tests_main.cpp catch.hpp
 	$(CC) -o $@ -c tests_main.cpp $(FLAGS)
@@ -13,5 +13,5 @@ $(HELPER): tests_main.cpp catch.hpp
 clean:
 	rm -f
 
-clean-all: clean
+clean_all: clean
 	rm -f $(HELPER)
