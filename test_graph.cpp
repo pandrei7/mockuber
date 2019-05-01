@@ -5,9 +5,9 @@
 #include <utility>
 #include <vector>
 
-#include "catch.hpp"
+#include "./catch.hpp"
 
-#include "graph.h"
+#include "./graph.h"
 
 TEST_CASE("Graph has correct size")
 {
