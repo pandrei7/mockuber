@@ -33,6 +33,18 @@ class Hashtable
         return size_;
     }
 
+    bool HasKey(const TKey &key) const
+    {
+        auto index = hash_(key) % buckets_.size();
+
+        for (const auto &p : buckets_[index]) {
+            if (equal_(p.first, key)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void Put(const TKey &key, const TValue &value)
     {
         auto index = hash_(key) % buckets_.size();

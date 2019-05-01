@@ -26,6 +26,17 @@ TEST_CASE("Hashtables work normally")
             REQUIRE(hash.Get(1) == 5);
         }
     }
+
+    SECTION("key searching works") {
+        hash.Put(1, 3);
+        REQUIRE(hash.HasKey(1));
+        REQUIRE(!hash.HasKey(7));
+
+        hash.Put(7, 2);
+        REQUIRE(hash.HasKey(7));
+        REQUIRE(hash.HasKey(1));
+        REQUIRE(!hash.HasKey(2));
+    }
 }
 
 TEST_CASE("Hashtables resize properly")
