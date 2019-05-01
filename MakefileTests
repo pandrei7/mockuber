@@ -3,15 +3,18 @@ FLAGS = -Wall -Wextra -Werror -std=c++11
 HELPER = tests_main.o
 
 
-all:
+all: test_hashtable
 
 $(HELPER): tests_main.cpp catch.hpp
 	$(CC) -o $@ -c tests_main.cpp $(FLAGS)
 
+test_hashtable: $(HELPER) test_hashtable.cpp hashtable.h hashtable_utils.h
+	$(CC) -o $@ $(HELPER) test_hashtable.cpp $(FLAGS)
+
 
 .PHONY: clean clean-all
 clean:
-	rm -f
+	rm -f test_hashtable
 
 clean_all: clean
 	rm -f $(HELPER)
