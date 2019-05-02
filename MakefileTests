@@ -4,7 +4,7 @@ HELPER = tests_main.o
 
 
 all: test_hashtable test_graph test_uber_node test_uber_map\
-	test_uber_driver
+	test_uber_driver test_uber_database
 
 $(HELPER): tests_main.cpp catch.hpp
 	$(CC) -o $@ -c tests_main.cpp $(FLAGS)
@@ -33,11 +33,18 @@ test_uber_driver: $(HELPER) test_uber_driver.cpp uber_driver.o
 uber_driver.o: uber_driver.cpp uber_driver.h
 	$(CC) -c $< $(FLAGS)
 
+test_uber_database: $(HELPER) test_uber_database.cpp uber_database.o\
+	uber_driver.o
+	$(CC) -o $@ $^ $(FLAGS)
+
+uber_database.o: uber_database.cpp uber_database.h uber_driver.h hashtable.h
+	$(CC) -c $< $(FLAGS)
+
 
 .PHONY: clean clean_all
 clean:
 	rm -f test_hashtable test_graph test_uber_node test_uber_map\
-		test_uber_driver uber*.o
+		test_uber_driver test_uber_database uber*.o
 
 clean_all: clean
 	rm -f $(HELPER)
