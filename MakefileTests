@@ -37,7 +37,7 @@ uber_driver.o: uber_driver.cpp uber_driver.h
 .PHONY: clean clean_all
 clean:
 	rm -f test_hashtable test_graph test_uber_node test_uber_map\
-		test_uber_driver
+		test_uber_driver uber*.o
 
 clean_all: clean
 	rm -f $(HELPER)
