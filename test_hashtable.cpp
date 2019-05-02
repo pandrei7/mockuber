@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "catch.hpp"
+#include "./catch.hpp"
 
 #include "./hashtable.h"
 #include "./hashtable_utils.h"
