@@ -3,7 +3,7 @@ FLAGS = -Wall -Wextra -Werror -std=c++11
 HELPER = tests_main.o
 
 
-all: test_hashtable test_graph test_uber_node
+all: test_hashtable test_graph test_uber_node test_uber_map
 
 $(HELPER): tests_main.cpp catch.hpp
 	$(CC) -o $@ -c tests_main.cpp $(FLAGS)
@@ -20,10 +20,16 @@ test_uber_node: $(HELPER) test_uber_node.cpp uber_node.o
 uber_node.o: uber_node.cpp uber_node.h
 	$(CC) -c $< $(FLAGS)
 
+test_uber_map: $(HELPER) test_uber_map.cpp uber_map.o uber_node.o
+	$(CC) -o $@ $^ $(FLAGS)
+
+uber_map.o: uber_map.cpp uber_map.h uber_node.h graph.h hashtable.h
+	$(CC) -c $< $(FLAGS)
+
 
 .PHONY: clean clean_all
 clean:
-	rm -f test_hashtable test_graph test_uber_node
+	rm -f test_hashtable test_graph test_uber_node test_uber_map
 
 clean_all: clean
 	rm -f $(HELPER)
