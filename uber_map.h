@@ -29,6 +29,8 @@ class UberMap
 
     void RemoveDriver(const std::string &name, int driver_id);
 
+    std::vector<int> AllDistances(const std::string &name) const;
+
     int Distance(const std::string &source, const std::string &dest) const;
 
     std::string Destination(const std::string &source,
@@ -37,8 +39,6 @@ class UberMap
     std::vector<int> ClosestDrivers(const std::string &name);
 
  private:
-    std::vector<int> AllDistances(int id) const;
-
     Graph<UberNode> graph_;
     Graph<UberNode> trans_;
 

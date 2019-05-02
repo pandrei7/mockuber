@@ -64,33 +64,10 @@ void UberMap::RemoveDriver(const std::string &name, int driver_id)
     graph_.Data(id).RemoveDriver(driver_id);
 }
 
-int UberMap::Distance(const std::string &source, const std::string &dest) const
+std::vector<int> UberMap::AllDistances(const std::string &name) const
 {
-    auto id_source = ids_.Get(source);
-    auto id_dest = ids_.Get(dest);
+    auto id = ids_.Get(name);
 
-    std::vector<int> dist(graph_.Size(), -1);
-    dist[id_source] = 0;
-
-    std::queue<int> q;
-    q.push(id_source);
-
-    while (!q.empty() && dist[id_dest] == -1) {
-        auto id = q.front();
-        q.pop();
-
-        for (const auto &next : graph_.Edges(id)) {
-            if (dist[next] == -1) {
-                dist[next] = dist[id] + 1;
-                q.push(next);
-            }
-        }
-    }
-    return dist[id_dest];
-}
-
-std::vector<int> UberMap::AllDistances(int id) const
-{
     std::vector<int> dist(graph_.Size(), -1);
     dist[id] = 0;
 
@@ -111,13 +88,18 @@ std::vector<int> UberMap::AllDistances(int id) const
     return dist;
 }
 
+int UberMap::Distance(const std::string &source, const std::string &dest) const
+{
+    auto id_dest = ids_.Get(dest);
+    return AllDistances(source)[id_dest];
+}
+
 std::string UberMap::Destination(const std::string &source,
                                  const std::string &dest) const
 {
-    auto id_source = ids_.Get(source);
     auto id_dest = ids_.Get(dest);
+    auto dist = AllDistances(source);
 
-    auto dist = AllDistances(id_source);
     if (dist[id_dest] != -1) {
         return graph_.Data(id_dest).Name();
     }
