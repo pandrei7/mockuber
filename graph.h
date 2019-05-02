@@ -85,7 +85,7 @@ class Graph
         return nodes_[index].data;
     }
 
-    const std::vector<int>& Edges(int index)
+    const std::vector<int>& Edges(int index) const
     {
         return nodes_[index].edges;
     }
