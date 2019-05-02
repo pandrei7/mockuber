@@ -15,7 +15,8 @@ test_graph: $(HELPER) test_graph.cpp graph.h
 	$(CC) -o $@ $(HELPER) test_graph.cpp $(FLAGS)
 
 
-.PHONY: clean clean-all
+
+.PHONY: clean clean_all
 clean:
 	rm -f test_hashtable test_graph
 
