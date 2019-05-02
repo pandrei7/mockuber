@@ -18,7 +18,7 @@ test_uber_node: $(HELPER) test_uber_node.cpp uber_node.o
 	$(CC) -o $@ $^ $(FLAGS)
 
 uber_node.o: uber_node.cpp uber_node.h
-	$(CC) -c $^ $(FLAGS)
+	$(CC) -c $< $(FLAGS)
 
 
 .PHONY: clean clean_all
