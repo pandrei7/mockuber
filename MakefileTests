@@ -23,7 +23,7 @@ uber_node.o: uber_node.cpp uber_node.h
 
 .PHONY: clean clean_all
 clean:
-	rm -f test_hashtable test_graph test_uber_node *.o
+	rm -f test_hashtable test_graph test_uber_node
 
 clean_all: clean
 	rm -f $(HELPER)
