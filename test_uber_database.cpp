@@ -9,20 +9,25 @@
 #include "./uber_database.h"
 #include "./uber_driver.h"
 
-TEST_CASE("UberDatabase indexes work correctly")
+TEST_CASE("UberDatabase gives correct driver data")
 {
     UberDatabase db;
     db.GoOnline("Mircea Badea", 1);
     db.GoOnline("Mihai Viteazul", 2);
     db.GoOnline("Chef Florin", 2);
 
-    SECTION("existing users") {
+    SECTION("ids of existing users") {
         REQUIRE(db.Id("Mircea Badea") == 0);
         REQUIRE(db.Id("Mihai Viteazul") == 1);
         REQUIRE(db.Id("Chef Florin") == 2);
     }
-    SECTION("non-existing users") {
+    SECTION("ids of non-existing users") {
         REQUIRE(db.Id("Chef Sorin") == -1);
+    }
+    SECTION("locations") {
+        REQUIRE(db.Location("Mircea Badea") == 1);
+        REQUIRE(db.Location("Mihai Viteazul") == 2);
+        REQUIRE(db.Location("Chef Florin") == 2);
     }
 }
 
