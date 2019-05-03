@@ -1,10 +1,10 @@
 CC = g++
 FLAGS = -Wall -Wextra -Werror -std=c++11
 HELPER = tests_main.o
+EXECS = test_hashtable test_graph test_uber_node test_uber_map\
+	test_uber_driver test_uber_database test_algorithms
 
-
-all: test_hashtable test_graph test_uber_node test_uber_map\
-	test_uber_driver test_uber_database
+all: $(EXECS)
 
 $(HELPER): tests_main.cpp catch.hpp
 	$(CC) -o $@ -c tests_main.cpp $(FLAGS)
@@ -40,11 +40,13 @@ test_uber_database: $(HELPER) test_uber_database.cpp uber_database.o\
 uber_database.o: uber_database.cpp uber_database.h uber_driver.h hashtable.h
 	$(CC) -c $< $(FLAGS)
 
+test_algorithms: $(HELPER) test_algorithms.cpp algorithms.h
+	$(CC) -o $@ $^ $(FLAGS)
+
 
 .PHONY: clean clean_all
 clean:
-	rm -f test_hashtable test_graph test_uber_node test_uber_map\
-		test_uber_driver test_uber_database uber*.o
+	rm -f $(EXECS) uber*.o
 
 clean_all: clean
 	rm -f $(HELPER)
