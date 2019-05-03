@@ -64,11 +64,6 @@ void UberApp::GoOffline(const std::string &driver)
 std::string UberApp::MakeTrip(const std::string &source,
                               const std::string &dest, double rating)
 {
-    auto real_dest = map_.Destination(source, dest);
-    if (real_dest.empty()) {
-        return "Destinatie inaccesibila";
-    }
-
     auto ids_drivers = map_.ClosestDrivers(source);
     if (ids_drivers.empty()) {
         return "Soferi indisponibili";
@@ -77,6 +72,11 @@ std::string UberApp::MakeTrip(const std::string &source,
     auto real_driver = database_.BestDriver(ids_drivers);
     auto real_driver_id = database_.Id(real_driver);
     auto real_start = database_.Driver(real_driver).Location();
+
+    auto real_dest = map_.Destination(source, dest);
+    if (real_dest.empty()) {
+        return "Destinatie inaccesibila";
+    }
 
     auto dist = map_.Distance(real_start, source) +
                 map_.Distance(source, real_dest);
