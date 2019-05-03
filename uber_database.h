@@ -16,6 +16,8 @@ class UberDatabase
 
     int Id(const std::string &name) const;
 
+    UberDriver Driver(const std::string &name) const;
+
     void GoOnline(const std::string &name, const std::string &location);
 
     void GoOffline(const std::string &name);

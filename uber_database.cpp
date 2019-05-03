@@ -16,6 +16,12 @@ int UberDatabase::Id(const std::string &name) const
     return ids_.Get(name);
 }
 
+UberDriver UberDatabase::Driver(const std::string &name) const
+{
+    auto id = ids_.Get(name);
+    return drivers_[id];
+}
+
 void UberDatabase::GoOnline(const std::string &name,
                             const std::string &location)
 {

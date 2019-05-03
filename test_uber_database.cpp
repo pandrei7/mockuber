@@ -24,6 +24,15 @@ TEST_CASE("UberDatabase gives correct driver data")
     SECTION("ids of non-existing users") {
         REQUIRE(db.Id("Chef Sorin") == -1);
     }
+    SECTION("driver object") {
+        auto driver = db.Driver("Chef Florin");
+        REQUIRE(driver.Name() == "Chef Florin");
+        REQUIRE(driver.Location() == "Paris");
+        REQUIRE(driver.Rating() == 0);
+        REQUIRE(driver.Distance() == 0);
+        REQUIRE(driver.Trips() == 0);
+        REQUIRE(driver.Online());
+    }
 }
 
 static bool SmallerName(const UberDriver &a, const UberDriver &b)
