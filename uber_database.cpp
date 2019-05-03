@@ -1,11 +1,12 @@
 // Copyright 2019 Preda Andrei
 
-#include "./algorithms.h"
 #include "./uber_database.h"
 
 #include <string>
 #include <utility>
 #include <vector>
+
+#include "./algorithms.h"
 
 int UberDatabase::Id(const std::string &name) const
 {

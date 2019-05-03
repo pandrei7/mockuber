@@ -3,6 +3,7 @@
 #ifndef ALGORITHMS_H_
 #define ALGORITHMS_H_
 
+#include <utility>
 #include <vector>
 
 template <typename T>
@@ -24,7 +25,7 @@ int Partition(std::vector<T> &vec, int left, int right, const CmpFunc<T> &cmp)
         while (i <= j && cmp(vec[left], vec[j])) {
             j -= 1;
         }
-        if (i <= j ) {
+        if (i <= j) {
             std::swap(vec[i], vec[j]);
             i += 1;
             j -= 1;
