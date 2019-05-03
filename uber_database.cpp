@@ -82,7 +82,9 @@ static void Quicksort(std::vector<UberDriver> &vec,
 std::vector<UberDriver> UberDatabase::SortedDrivers(const CmpFunc &cmp) const
 {
     std::vector<UberDriver> drivers(drivers_);
-    Quicksort(drivers, 0, drivers.size(), cmp);
+    if (cmp) {
+        Quicksort(drivers, 0, drivers.size(), cmp);
+    }
 
     return drivers;
 }
