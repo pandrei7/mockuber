@@ -25,6 +25,8 @@ class UberDatabase
     void MakeTrip(const std::string &name, const std::string &dest,
                                         int distance, double rating);
 
+    std::string BestDriver(const std::vector<int> &ids) const;
+
     std::vector<UberDriver> SortedDrivers(const CmpFunc &cmp) const;
 
  private:

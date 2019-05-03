@@ -46,6 +46,31 @@ void UberDatabase::MakeTrip(const std::string &name, const std::string &dest,
     drivers_[ids_.Get(name)].MakeTrip(dest, distance, rating);
 }
 
+static bool BetterDriver(const UberDriver &a, const UberDriver &b)
+{
+    if (std::abs(a.Rating() - b.Rating()) < 0.0001) {
+        return a.Name() < b.Name();
+    }
+    return a.Rating() > b.Rating();
+}
+
+std::string UberDatabase::BestDriver(const std::vector<int> &ids) const
+{
+    std::string best_name = "";
+    int best_id = -1;
+
+    for (const auto &id : ids) {
+        if (!drivers_[id].Online()) {
+            continue;
+        }
+        if (best_id == -1 || BetterDriver(drivers_[id], drivers_[best_id])) {
+            best_name = drivers_[id].Name();
+            best_id = id;
+        }
+    }
+    return best_name;
+}
+
 std::vector<UberDriver> UberDatabase::SortedDrivers(const CmpFunc &cmp) const
 {
     std::vector<UberDriver> drivers(drivers_);

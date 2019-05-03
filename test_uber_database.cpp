@@ -35,6 +35,23 @@ TEST_CASE("UberDatabase gives correct driver data")
     }
 }
 
+TEST_CASE("Choosing the best driver works correctly")
+{
+    UberDatabase db;
+    db.GoOnline("A", "A");
+    db.GoOnline("B", "B");
+    db.GoOnline("C", "C");
+
+    db.MakeTrip("A", "A", 1, 3);
+    db.MakeTrip("B", "B", 1, 4);
+
+    REQUIRE(db.BestDriver({0, 1, 2}) == "B");
+    REQUIRE(db.BestDriver({0, 2}) == "A");
+    REQUIRE(db.BestDriver({2}) == "C");
+    REQUIRE(db.BestDriver({}) == "");
+    REQUIRE(db.BestDriver({1, 2, 1, 2, 1}) == "B");
+}
+
 static bool SmallerName(const UberDriver &a, const UberDriver &b)
 {
     return a.Name() < b.Name();
