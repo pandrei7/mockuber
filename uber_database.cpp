@@ -16,12 +16,8 @@ int UberDatabase::Id(const std::string &name) const
     return ids_.Get(name);
 }
 
-int UberDatabase::Location(const std::string &name) const
-{
-    return drivers_[ids_.Get(name)].Location();
-}
-
-void UberDatabase::GoOnline(const std::string &name, int location)
+void UberDatabase::GoOnline(const std::string &name,
+                            const std::string &location)
 {
     auto id = Id(name);
     if (id == -1) {
@@ -38,8 +34,8 @@ void UberDatabase::GoOffline(const std::string &name)
     drivers_[ids_.Get(name)].GoOffline();
 }
 
-void UberDatabase::MakeTrip(const std::string &name, int dest,
-                            int distance, double rating)
+void UberDatabase::MakeTrip(const std::string &name, const std::string &dest,
+                                                int distance, double rating)
 {
     drivers_[ids_.Get(name)].MakeTrip(dest, distance, rating);
 }

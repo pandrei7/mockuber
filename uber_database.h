@@ -16,14 +16,12 @@ class UberDatabase
 
     int Id(const std::string &name) const;
 
-    int Location(const std::string &name) const;
-
-    void GoOnline(const std::string &name, int location);
+    void GoOnline(const std::string &name, const std::string &location);
 
     void GoOffline(const std::string &name);
 
-    void MakeTrip(const std::string &name, int dest,
-                  int distance, double rating);
+    void MakeTrip(const std::string &name, const std::string &dest,
+                                        int distance, double rating);
 
     std::vector<UberDriver> SortedDrivers(const CmpFunc &cmp) const;
 

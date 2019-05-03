@@ -12,9 +12,9 @@
 TEST_CASE("UberDatabase gives correct driver data")
 {
     UberDatabase db;
-    db.GoOnline("Mircea Badea", 1);
-    db.GoOnline("Mihai Viteazul", 2);
-    db.GoOnline("Chef Florin", 2);
+    db.GoOnline("Mircea Badea", "Antena");
+    db.GoOnline("Mihai Viteazul", "Alba Iulia");
+    db.GoOnline("Chef Florin", "Paris");
 
     SECTION("ids of existing users") {
         REQUIRE(db.Id("Mircea Badea") == 0);
@@ -23,11 +23,6 @@ TEST_CASE("UberDatabase gives correct driver data")
     }
     SECTION("ids of non-existing users") {
         REQUIRE(db.Id("Chef Sorin") == -1);
-    }
-    SECTION("locations") {
-        REQUIRE(db.Location("Mircea Badea") == 1);
-        REQUIRE(db.Location("Mihai Viteazul") == 2);
-        REQUIRE(db.Location("Chef Florin") == 2);
     }
 }
 
@@ -52,12 +47,12 @@ static bool ComplexCmp(const UberDriver &a, const UberDriver &b)
 TEST_CASE("Sorting gives the right order")
 {
     UberDatabase db;
-    db.GoOnline("Mirciulica", 4);
-    db.GoOnline("Alexandra", 4);
-    db.GoOnline("Tezeu", 3);
-    db.GoOnline("Pilaf", 0);
-    db.GoOnline("Zaraza", 200);
-    db.GoOnline("Taximetrist craiovean", 2);
+    db.GoOnline("Mirciulica", "B1");
+    db.GoOnline("Alexandra", "A2");
+    db.GoOnline("Tezeu", "C3");
+    db.GoOnline("Pilaf", "D4");
+    db.GoOnline("Zaraza", "Circul de stat");
+    db.GoOnline("Taximetrist craiovean", "Unde vrea el");
 
     std::vector<UberDatabase::CmpFunc> funcs = {
         SmallerName, GreaterName, ComplexCmp
@@ -76,9 +71,9 @@ TEST_CASE("Sorting gives the right order")
 TEST_CASE("Sorting with nullptr does not change the order")
 {
     UberDatabase db;
-    db.GoOnline("B", 1);
-    db.GoOnline("C", 2);
-    db.GoOnline("A", 3);
+    db.GoOnline("B", "1");
+    db.GoOnline("C", "2");
+    db.GoOnline("A", "3");
 
     auto sorted = db.SortedDrivers(nullptr);
     REQUIRE(sorted.size() == 3);

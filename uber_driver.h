@@ -9,19 +9,20 @@ class UberDriver
 {
  public:
      explicit UberDriver(const std::string &name)
-                 : name_(name), rating_(0), location_(-1),
+                 : name_(name), location_(""), rating_(0),
                    distance_(0), trips_(0), online_(false) {}
 
-     void MakeTrip(int dest, int distance, double rating);
+     void MakeTrip(const std::string &dest, int distance, double rating);
 
-     void GoOnline(int location) { online_ = true; location_ = location; }
-     void GoOffline() { online_ = false; }
+     void GoOnline(const std::string &location);
+
+     void GoOffline();
 
      const std::string& Name() const { return name_; }
 
-     double Rating() const { return rating_; }
+     const std::string& Location() const { return location_; }
 
-     int Location() const { return location_; }
+     double Rating() const { return rating_; }
 
      int Distance() const { return distance_; }
 
@@ -31,8 +32,8 @@ class UberDriver
 
  private:
     std::string name_;
+    std::string location_;
     double rating_;
-    int location_;
     int distance_;
     int trips_;
     bool online_;
