@@ -1,10 +1,10 @@
 // Copyright 2019 Preda Andrei
 
+#include "./uber_map.h"
+
 #include <queue>
 #include <string>
 #include <vector>
-
-#include "./uber_map.h"
 
 int UberMap::Id(const std::string &name) const
 {
