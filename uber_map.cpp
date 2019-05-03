@@ -102,7 +102,7 @@ std::string UberMap::Destination(const std::string &source,
     auto dist = AllDistances(source);
 
     if (dist[id_dest] != -1) {
-        return graph_.Data(id_dest).Name();
+        return dest;
     }
 
     auto best_id = -1;
@@ -138,14 +138,15 @@ std::vector<int> UberMap::ClosestDrivers(const std::string &name)
         auto id = q.front();
         q.pop();
 
+        if (driver_dist > -1 && dist[id] > driver_dist) {
+            continue;
+        }
+
         if (!graph_.Data(id).Drivers().empty()) {
             driver_dist = dist[id];
 
             const auto &vec = graph_.Data(id).Drivers();
             drivers.insert(drivers.end(), vec.begin(), vec.end());
-        }
-
-        if (dist[id] == driver_dist) {
             continue;
         }
 
