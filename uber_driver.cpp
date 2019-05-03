@@ -2,6 +2,8 @@
 
 #include "./uber_driver.h"
 
+#include <string>
+
 void UberDriver::MakeTrip(const std::string &dest, int distance, double rating)
 {
     location_ = dest;
