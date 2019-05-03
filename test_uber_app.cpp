@@ -44,11 +44,15 @@ TEST_CASE("Street operations work correctly")
     a.AddStreet("B", "C");
     REQUIRE(a.Distance("A", "C") == 2);
 
-    a.ToggleStreet("A", "B");
+    a.ReverseStreet("A", "B");
+    REQUIRE(a.Distance("A", "C") == -1);
+    REQUIRE(a.Distance("B", "A") == 1);
+
+    a.ReverseStreet("A", "B");
+    a.RemoveStreet("B", "C");
     REQUIRE(a.Distance("A", "C") == -1);
 
-    a.ToggleStreet("A", "B");
-    a.RemoveStreet("B", "C");
+    a.ReverseStreet("B", "C");
     REQUIRE(a.Distance("A", "C") == -1);
 }
 

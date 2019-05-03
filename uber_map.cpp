@@ -43,13 +43,14 @@ void UberMap::RemoveStreet(const std::string &a, const std::string &b)
     }
 }
 
-void UberMap::ToggleStreet(const std::string &a, const std::string &b)
+void UberMap::ReverseStreet(const std::string &a, const std::string &b)
 {
     auto id_a = ids_.Get(a);
     auto id_b = ids_.Get(b);
 
-    graph_.ToggleEdge(id_a, id_b);
-    changed_ = true;
+    if (graph_.ReverseEdge(id_a, id_b)) {
+        changed_ = true;
+    }
 }
 
 void UberMap::AddDriver(const std::string &name, int driver_id)

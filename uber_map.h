@@ -23,7 +23,7 @@ class UberMap
 
     void RemoveStreet(const std::string &a, const std::string &b);
 
-    void ToggleStreet(const std::string &a, const std::string &b);
+    void ReverseStreet(const std::string &a, const std::string &b);
 
     void AddDriver(const std::string &name, int driver_id);
 

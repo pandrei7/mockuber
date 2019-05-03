@@ -107,19 +107,29 @@ TEST_CASE("Edge-operations work correctly")
         }
     }
 
-    SECTION("edges are toggled correctly") {
-        graph.ToggleEdge(0, 1);
-        REQUIRE(graph.Edges(0).size() == 0);
-        REQUIRE(graph.Edges(1).size() == 1);
-
-        graph.ToggleEdge(1, 0);
+    SECTION("edges are reversed correctly") {
+        graph.ReverseEdge(0, 1);
         REQUIRE(graph.Edges(0).size() == 0);
         REQUIRE(graph.Edges(1).size() == 2);
-        REQUIRE(graph.Edges(1)[1] == 0);
 
-        graph.ToggleEdge(0, 1);
+        graph.ReverseEdge(1, 0);
         REQUIRE(graph.Edges(0).size() == 1);
-        REQUIRE(graph.Edges(0)[0] == 1);
+        REQUIRE(graph.Edges(1).size() == 1);
+
+        SECTION("nodes are not connected initally") {
+            graph.RemoveEdge(0, 1);
+            graph.ReverseEdge(0, 1);
+
+            REQUIRE(graph.Edges(0).size() == 0);
+            REQUIRE(graph.Edges(1).size() == 1);
+        }
+        SECTION("nodes are connected both ways") {
+            graph.AddEdge(1, 0);
+            graph.ReverseEdge(0, 1);
+
+            REQUIRE(graph.Edges(0).size() == 1);
+            REQUIRE(graph.Edges(1).size() == 2);
+        }
     }
 }
 

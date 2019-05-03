@@ -16,7 +16,7 @@ class UberApp
     void AddIntersection(const std::string &name);
     void AddStreet(const std::string &a, const std::string &b);
     void RemoveStreet(const std::string &a, const std::string &b);
-    void ToggleStreet(const std::string &a, const std::string &b);
+    void ReverseStreet(const std::string &a, const std::string &b);
 
     int Distance(const std::string &source, const std::string &dest) const;
 

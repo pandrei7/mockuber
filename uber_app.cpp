@@ -24,9 +24,9 @@ void UberApp::RemoveStreet(const std::string &a, const std::string &b)
     map_.RemoveStreet(a, b);
 }
 
-void UberApp::ToggleStreet(const std::string &a, const std::string &b)
+void UberApp::ReverseStreet(const std::string &a, const std::string &b)
 {
-    map_.ToggleStreet(a, b);
+    map_.ReverseStreet(a, b);
 }
 
 int UberApp::Distance(const std::string &source, const std::string &dest) const

@@ -66,30 +66,30 @@ TEST_CASE("Street operations work ok")
         m.AddStreet(edge.first, edge.second);
     }
 
-    SECTION("removing edges") {
-        SECTION("existing edges") {
+    SECTION("removing streets") {
+        SECTION("existing streets") {
             REQUIRE(m.Distance("A", "D") == 2);
             m.RemoveStreet("B", "D");
             REQUIRE(m.Distance("A", "D") == -1);
         }
 
-        SECTION("non-existing edges") {
+        SECTION("non-existing streets") {
             REQUIRE(m.Distance("B", "C") == -1);
             m.RemoveStreet("B", "C");
             REQUIRE(m.Distance("B", "C") == -1);
         }
     }
 
-    SECTION("toggling edges") {
+    SECTION("reversing streets") {
         REQUIRE(m.Distance("A", "D") == 2);
-        m.ToggleStreet("A", "D");
-        REQUIRE(m.Distance("A", "D") == 1);
-
-        m.ToggleStreet("A", "D");
+        m.ReverseStreet("A", "D");
         REQUIRE(m.Distance("A", "D") == 2);
 
-        m.ToggleStreet("B", "D");
+        m.ReverseStreet("D", "B");
         REQUIRE(m.Distance("A", "D") == -1);
+
+        m.ReverseStreet("B", "D");
+        REQUIRE(m.Distance("A", "D") == 2);
     }
 }
 

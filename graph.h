@@ -48,16 +48,30 @@ class Graph
         return false;
     }
 
-    void ToggleEdge(int a, int b)
+    bool ReverseEdge(int a, int b)
     {
-        auto &edges = nodes_[a].edges;
-        auto it = find(edges.begin(), edges.end(), b);
+        auto &edges_a = nodes_[a].edges;
+        auto &edges_b = nodes_[b].edges;
 
-        if (it == edges.end()) {
-            edges.push_back(b);
-        } else {
-            edges.erase(it);
+        auto has_ab = find(edges_a.begin(), edges_a.end(), b) != edges_a.end();
+        auto has_ba = find(edges_b.begin(), edges_b.end(), a) != edges_b.end();
+
+        if (a == b) {
+            return (has_ab ? RemoveEdge(a, b) : AddEdge(a, b));
         }
+
+        if (has_ab == has_ba) {
+            return false;
+        }
+
+        if (has_ab) {
+            RemoveEdge(a, b);
+            AddEdge(b, a);
+        } else {
+            RemoveEdge(b, a);
+            AddEdge(a, b);
+        }
+        return true;
     }
 
     Graph Transposed() const
