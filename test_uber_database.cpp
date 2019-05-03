@@ -72,3 +72,17 @@ TEST_CASE("Sorting gives the right order")
         }
     }
 }
+
+TEST_CASE("Sorting with nullptr does not change the order")
+{
+    UberDatabase db;
+    db.GoOnline("B", 1);
+    db.GoOnline("C", 2);
+    db.GoOnline("A", 3);
+
+    auto sorted = db.SortedDrivers(nullptr);
+    REQUIRE(sorted.size() == 3);
+    REQUIRE(sorted[0].Name() == "B");
+    REQUIRE(sorted[1].Name() == "C");
+    REQUIRE(sorted[2].Name() == "A");
+}
