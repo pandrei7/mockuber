@@ -3,6 +3,7 @@
 #ifndef UBER_DATABASE_H_
 #define UBER_DATABASE_H_
 
+#include <cstddef>
 #include <string>
 #include <vector>
 
@@ -12,7 +13,7 @@
 class UberDatabase
 {
  public:
-    using CmpFunc = bool(*)(const UberDriver &a, const UberDriver &b);
+    UberDatabase();
 
     int Id(const std::string &name) const;
 
@@ -27,11 +28,20 @@ class UberDatabase
 
     std::string BestDriver(const std::vector<int> &ids) const;
 
-    std::vector<UberDriver> SortedDrivers(const CmpFunc &cmp) const;
+    std::vector<UberDriver> SortedDrivers(const std::string &mode,
+                                          std::size_t count) const;
 
  private:
+    using CmpFunc = bool(*)(const UberDriver &a, const UberDriver &b);
+
+    void UpdateSortings(int id);
+    void Reorder(std::vector<int> &sorted, int id, CmpFunc cmp);
+
     std::vector<UberDriver> drivers_;
     Hashtable<std::string, int> ids_;
+
+    Hashtable<std::string, std::vector<int>> sorted_ids_;
+    Hashtable<std::string, CmpFunc> cmp_funcs_;
 };
 
 #endif  // UBER_DATABASE_H_

@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <list>
+#include <stdexcept>
 #include <utility>
 #include <vector>
 
@@ -74,6 +75,18 @@ class Hashtable
             }
         }
         return TValue();
+    }
+
+    TValue& GetRef(const TKey &key)
+    {
+        auto index = hash_(key) % buckets_.size();
+
+        for (auto &p : buckets_[index]) {
+            if (equal_(p.first, key)) {
+                return p.second;
+            }
+        }
+        throw std::runtime_error("Key is not in the hashtable");
     }
 
  private:

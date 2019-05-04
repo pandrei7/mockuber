@@ -114,21 +114,19 @@ static void PrintInfo(const UberDriver &driver, std::ofstream &fout)
     fout << (driver.Online() ? "online" : "offline") << "\n";
 }
 
-static void PrintDrivers(const std::vector<UberDriver> &vec, std::size_t num,
+static void PrintDrivers(const std::vector<UberDriver> &vec,
                          const std::string &type, std::ofstream &fout)
 {
-    auto limit = (num < vec.size() ? num : vec.size());
-
-    for (std::size_t i = 0; i < limit; i += 1) {
-        fout << vec[i].Name() << ":";
+    for (const auto &driver : vec) {
+        fout << driver.Name() << ":";
 
         fout << std::fixed << std::setprecision(3);
         if (type == "top_rating") {
-            fout << vec[i].Rating() << " ";
+            fout << driver.Rating() << " ";
         } else if (type == "top_dist") {
-            fout << vec[i].Distance() << " ";
+            fout << driver.Distance() << " ";
         } else {
-            fout << vec[i].Trips() << " ";
+            fout << driver.Trips() << " ";
         }
     }
     fout << "\n";
@@ -173,8 +171,8 @@ void solver::task4_solver(std::ifstream &fin, std::ofstream &fout)
             fin >> num;
             fin.get();
 
-            auto drivers = app_.SortedDrivers(type);
-            PrintDrivers(drivers, num, type, fout);
+            auto drivers = app_.SortedDrivers(type, num);
+            PrintDrivers(drivers, type, fout);
         }
     }
 }

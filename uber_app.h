@@ -3,6 +3,7 @@
 #ifndef UBER_APP_H_
 #define UBER_APP_H_
 
+#include <cstddef>
 #include <string>
 #include <vector>
 
@@ -28,7 +29,8 @@ class UberApp
     std::string MakeTrip(const std::string &source,
                          const std::string &dest, double rating);
 
-    std::vector<UberDriver> SortedDrivers(const std::string &mode) const;
+    std::vector<UberDriver> SortedDrivers(const std::string &mode,
+                                          std::size_t count) const;
 
     std::vector<std::string> SortedByDistance(const std::string &source,
                     const std::vector<std::string> &dest, int max_dist) const;

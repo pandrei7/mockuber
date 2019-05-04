@@ -1,10 +1,10 @@
 CC = g++
-FLAGS = -Wall -Wextra -Werror -std=c++11
+FLAGS = -Wall -Wextra -Werror -std=c++11 -pg
 
 
 build: main.o solver.o uber_app.o uber_database.o uber_driver.o\
 	uber_map.o uber_node.o
-	g++ --std=c++11 -Wall -Wextra $^ -o tema2
+	g++ --std=c++11 -Wall -Wextra $^ -o tema2 -pg
 
 run:
 	./tema2

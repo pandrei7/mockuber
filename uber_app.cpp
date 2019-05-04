@@ -88,42 +88,10 @@ std::string UberApp::MakeTrip(const std::string &source,
     return "";
 }
 
-static bool CmpRating(const UberDriver &a, const UberDriver &b)
+std::vector<UberDriver> UberApp::SortedDrivers(const std::string &mode,
+                                               std::size_t count) const
 {
-    if (std::abs(a.Rating() - b.Rating()) < 0.0001) {
-        return a.Name() < b.Name();
-    }
-    return a.Rating() > b.Rating();
-}
-
-static bool CmpDistance(const UberDriver &a, const UberDriver &b)
-{
-    if (a.Distance() == b.Distance()) {
-        return a.Name() < b.Name();
-    }
-    return a.Distance() > b.Distance();
-}
-
-static bool CmpTrips(const UberDriver &a, const UberDriver &b)
-{
-    if (a.Trips() == b.Trips()) {
-        return a.Name() < b.Name();
-    }
-    return a.Trips() > b.Trips();
-}
-
-std::vector<UberDriver> UberApp::SortedDrivers(const std::string &mode) const
-{
-    UberDatabase::CmpFunc cmp = nullptr;
-    if (mode == "top_rating") {
-        cmp = CmpRating;
-    } else if (mode == "top_dist") {
-        cmp = CmpDistance;
-    } else if (mode == "top_rides") {
-        cmp = CmpTrips;
-    }
-
-    return database_.SortedDrivers(cmp);
+    return database_.SortedDrivers(mode, count);
 }
 
 static bool CmpIntersections(const std::pair<std::string, int> &a,
