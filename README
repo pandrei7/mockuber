@@ -1,0 +1,45 @@
+Nume: Preda Andrei
+Grupa: 311 CA
+
+# Structuri de Date - Tema 2
+
+Am organizat codul în următoarele fișiere:
+- algorithms.h    - implementarea algoritmului Quicksort
+- graph.h         - implementarea unui graph orientat, generic
+- hashtable.h     - implementrea unui hashtable generic
+- hashtable_utils.h - clase folositoare pentru hashtable, precum un operator
+                    de egalitate și funcții hash
+- uber_node.h     - clasă ce reprezintă o intersecție
+- uber_driver.h   - clasă ce reprezintă un șofer
+- uber_database.h - "baza de date" de șoferi (o interfață care ușurează
+                    lucrul cu șoferii)
+- uber_map.h      - harta folosită de aplicație
+- uber_app.h      - clasă ce reprezintă aplicația ca un tot.
+
+Am ales să modelez harta orașului sub forma unui graf orientat, fără
+costuri pe muchii. Din moment ce reprezintă un sistem rutier, am considerat
+că graful este destul de rar (o intersecție nu e legată direct de multe
+altele), așa că am reținut muchiile prin liste de adiacență. Astfel, sper
+să economisesc memorie și să fac mai eficientă parcurgerea grafului.
+
+Pentru a eficientiza lucrul cu graful, am ales să asociez fiecărei intersecții
+un număr de identificare, iar muchiile să fie reținute sub acestă formă, nu
+folosind șiruri de caractere. Procedez asemănător și în cazul șoferilor,
+atribuind fiecăruia un număr de identificare. Pentru a face aceste asocieri,
+folosesc un hashtable generic. Am ales să rezolv coliziunile prin tehnica
+"separate chaining", deoarece mi s-a părut inițal mai simplu de implementat.
+Ulterior, am implementat și tehnica "open addressing", dar rezultatele pe
+teste au fost aceleași din punct de vedere al timpului, așa că am păstrat
+prima implementare.
+
+Pentru a afla distanțe între intersecții, am folosit un algoritm de tip Bfs.
+Acesta ar trebui să fie optim pentru graful cu care lucrez, din moment ce
+muchiile nu au "costuri" diferite. Am încercat să eficientizez găsirea celui
+mai bun șofer pentru o cursă lucrând cu graful transpus. În acest mod, pot
+afla toți șoferii care se afla la cea mai mică distanță de un nod printr-o
+singură parcurgere din nodul de start. Am considerat că va fi mai rapid decât
+să parcurg graful pentru fiecare șofer în parte.
+
+În general, am încercat să lucrez folosind referințe și referințe constante,
+sperând astfel să evit copierea anumitor structuri de date, acolo unde nu
+era neapărat nevoie de acest lucru.
