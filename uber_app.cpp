@@ -149,7 +149,7 @@ std::vector<std::string> UberApp::SortedByDistance(const std::string &source,
         }
     }
 
-    Quicksort(vec, 0, vec.size() - 1, &CmpIntersections);
+    Quicksort(vec, 0, vec.size(), &CmpIntersections);
 
     std::vector<std::string> res(vec.size());
     for (std::size_t i = 0; i < res.size(); i += 1) {
