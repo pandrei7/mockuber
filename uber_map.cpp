@@ -19,6 +19,7 @@ void UberMap::AddIntersection(const std::string &name)
     if (!ids_.HasKey(name)) {
         ids_.Put(name, ids_.Size());
         graph_.AddNode(UberNode(name));
+        dists_.push_back(std::vector<int>());
         changed_ = true;
     }
 }
@@ -65,9 +66,18 @@ void UberMap::RemoveDriver(const std::string &name, int driver_id)
     graph_.Data(id).RemoveDriver(driver_id);
 }
 
-std::vector<int> UberMap::AllDistances(const std::string &name) const
+void UberMap::SaveDistances(bool status)
+{
+    save_dists_ = status;
+}
+
+std::vector<int> UberMap::AllDistances(const std::string &name)
 {
     auto id = ids_.Get(name);
+
+    if (save_dists_ && !dists_[id].empty()) {
+        return dists_[id];
+    }
 
     std::vector<int> dist(graph_.Size(), -1);
     dist[id] = 0;
@@ -86,17 +96,20 @@ std::vector<int> UberMap::AllDistances(const std::string &name) const
             }
         }
     }
+    if (save_dists_) {
+        dists_[ids_.Get(name)] = dist;
+    }
     return dist;
 }
 
-int UberMap::Distance(const std::string &source, const std::string &dest) const
+int UberMap::Distance(const std::string &source, const std::string &dest)
 {
     auto id_dest = ids_.Get(dest);
     return AllDistances(source)[id_dest];
 }
 
 std::string UberMap::Destination(const std::string &source,
-                                 const std::string &dest) const
+                                 const std::string &dest)
 {
     auto id_dest = ids_.Get(dest);
     auto dist = AllDistances(source);

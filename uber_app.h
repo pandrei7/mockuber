@@ -19,7 +19,9 @@ class UberApp
     void RemoveStreet(const std::string &a, const std::string &b);
     void ReverseStreet(const std::string &a, const std::string &b);
 
-    int Distance(const std::string &source, const std::string &dest) const;
+    void SaveDistances(bool status);
+
+    int Distance(const std::string &source, const std::string &dest);
 
     UberDriver Driver(const std::string &name) const;
 
@@ -33,7 +35,7 @@ class UberApp
                                           std::size_t count) const;
 
     std::vector<std::string> SortedByDistance(const std::string &source,
-                    const std::vector<std::string> &dest, int max_dist) const;
+                    const std::vector<std::string> &dest, int max_dist);
 
  private:
     UberDatabase database_;

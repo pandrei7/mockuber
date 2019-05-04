@@ -134,6 +134,8 @@ static void PrintDrivers(const std::vector<UberDriver> &vec,
 
 void solver::task4_solver(std::ifstream &fin, std::ofstream &fout)
 {
+    app_.SaveDistances(true);
+
     int queries;
     fin >> queries;
     fin.get();

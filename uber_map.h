@@ -29,12 +29,13 @@ class UberMap
 
     void RemoveDriver(const std::string &name, int driver_id);
 
-    std::vector<int> AllDistances(const std::string &name) const;
+    void SaveDistances(bool status);
 
-    int Distance(const std::string &source, const std::string &dest) const;
+    std::vector<int> AllDistances(const std::string &name);
 
-    std::string Destination(const std::string &source,
-                            const std::string &dest) const;
+    int Distance(const std::string &source, const std::string &dest);
+
+    std::string Destination(const std::string &source, const std::string &dest);
 
     std::vector<int> ClosestDrivers(const std::string &name);
 
@@ -43,7 +44,10 @@ class UberMap
     Graph<UberNode> trans_;
 
     Hashtable<std::string, int> ids_;
+    std::vector<std::vector<int>> dists_;
+
     bool changed_;
+    bool save_dists_;
 };
 
 #endif  // UBER_MAP_H_

@@ -29,7 +29,12 @@ void UberApp::ReverseStreet(const std::string &a, const std::string &b)
     map_.ReverseStreet(a, b);
 }
 
-int UberApp::Distance(const std::string &source, const std::string &dest) const
+void UberApp::SaveDistances(bool status)
+{
+    map_.SaveDistances(status);
+}
+
+int UberApp::Distance(const std::string &source, const std::string &dest)
 {
     return map_.Distance(source, dest);
 }
@@ -104,7 +109,7 @@ static bool CmpIntersections(const std::pair<std::string, int> &a,
 }
 
 std::vector<std::string> UberApp::SortedByDistance(const std::string &source,
-                    const std::vector<std::string> &dest, int max_dist) const
+                    const std::vector<std::string> &dest, int max_dist)
 {
     auto dist = map_.AllDistances(source);
     std::vector<std::pair<std::string, int>> vec;
