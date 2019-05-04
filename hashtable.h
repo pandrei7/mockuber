@@ -11,6 +11,12 @@
 
 #include "./hashtable_utils.h"
 
+// This class represents a generic, resizable hashtable.
+// It uniquely associates a key of type TKey with a value of type TValue.
+// The class accepts a custom "hash operator" of type THash.
+// Equality between two keys is determined using an operator of type TEqual.
+// Collisions are solved using the separate chaining technique.
+// The hashtable is resized when a fixed "load factor" is reached.
 template <typename TKey,
           typename TValue,
           typename THash = Hash<TKey>,
@@ -28,6 +34,7 @@ class Hashtable
           buckets_(std::vector<std::list<Pair>>(capacity)),
           size_(0) {}
 
+    // This method returns the number of keys held in the hashtable.
     std::size_t Size() const
     {
         return size_;
@@ -45,6 +52,8 @@ class Hashtable
         return false;
     }
 
+    // This method updates an existing key-value pair with a new value,
+    // or inserts a new key-value pair if the key cannot be found.
     void Put(const TKey &key, const TValue &value)
     {
         auto index = hash_(key) % buckets_.size();
@@ -64,6 +73,8 @@ class Hashtable
         }
     }
 
+    // This method return the value associated with a given key.
+    // If the key cannot be found, a default-constructed value is returned.
     TValue Get(const TKey &key) const
     {
         auto index = hash_(key) % buckets_.size();
@@ -80,6 +91,8 @@ class Hashtable
     static constexpr double kLoadFactor = 0.75;
     static constexpr double kResizeFactor = 2.337;
 
+    // This method resizes the hashtable.
+    // The number of buckets gets multiplied by a constant.
     void Resize()
     {
         std::size_t new_capacity = buckets_.size() * kResizeFactor;

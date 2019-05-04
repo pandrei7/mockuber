@@ -6,6 +6,9 @@
 #include <string>
 #include <vector>
 
+// This class represents an intersection for the Uber app.
+// It has a name, as well as a list of the ids of the drivers who are
+// found in the intersection, at a certain time.
 class UberNode
 {
  public:

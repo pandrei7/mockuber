@@ -69,6 +69,7 @@ std::string UberApp::MakeTrip(const std::string &source,
         return "Soferi indisponibili";
     }
 
+    // Choose the best driver out of the closest ones.
     auto real_driver = database_.BestDriver(ids_drivers);
     auto real_driver_id = database_.Id(real_driver);
     auto real_start = database_.Driver(real_driver).Location();
@@ -85,7 +86,7 @@ std::string UberApp::MakeTrip(const std::string &source,
     map_.AddDriver(real_dest, real_driver_id);
     database_.MakeTrip(real_driver, real_dest, dist, rating);
 
-    return "";
+    return "";  // The trip was made successfully.
 }
 
 static bool CmpRating(const UberDriver &a, const UberDriver &b)
@@ -139,22 +140,25 @@ std::vector<std::string> UberApp::SortedByDistance(const std::string &source,
                     const std::vector<std::string> &dest, int max_dist) const
 {
     auto dist = map_.AllDistances(source);
-    std::vector<std::pair<std::string, int>> vec;
+    std::vector<std::pair<std::string, int>> pairs;
 
     for (const auto &name : dest) {
         auto id = map_.Id(name);
+        // Only intersection that can be reached in a certain
+        // number of steps are considered.
         if (dist[id] != -1 && dist[id] <= max_dist) {
-            vec.push_back({name, dist[id]});
-            dist[id] = -1;
+            pairs.push_back({name, dist[id]});
+            dist[id] = -1;  // Prevent insertion of duplicates.
         }
     }
 
-    Quicksort(vec, 0, vec.size(), &CmpIntersections);
+    // Sort the intersections in ascending order by distance.
+    Quicksort(pairs, 0, pairs.size(), &CmpIntersections);
 
-    std::vector<std::string> res(vec.size());
+    // Only save the intersection names.
+    std::vector<std::string> res(pairs.size());
     for (std::size_t i = 0; i < res.size(); i += 1) {
-        res[i] = vec[i].first;
+        res[i] = pairs[i].first;
     }
-
     return res;
 }

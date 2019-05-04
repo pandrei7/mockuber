@@ -65,6 +65,7 @@ void UberMap::RemoveDriver(const std::string &name, int driver_id)
     graph_.Data(id).RemoveDriver(driver_id);
 }
 
+// The distances are computed using a simple Bfs algorithm.
 std::vector<int> UberMap::AllDistances(const std::string &name) const
 {
     auto id = ids_.Get(name);
@@ -101,10 +102,13 @@ std::string UberMap::Destination(const std::string &source,
     auto id_dest = ids_.Get(dest);
     auto dist = AllDistances(source);
 
+    // If the desired destination is reachable, return its name.
     if (dist[id_dest] != -1) {
         return dest;
     }
 
+    // If the desired destination is unreachable, try to reach
+    // one of its neighbours, picking the closest one.
     auto best_id = -1;
     for (const auto &next : graph_.Edges(id_dest)) {
         if (dist[next] == -1) {
@@ -118,8 +122,11 @@ std::string UberMap::Destination(const std::string &source,
     return (best_id == -1 ? "" : graph_.Data(best_id).Name());
 }
 
+// In order to find the closest drivers, this method uses the Bfs
+// algorithm on the transpose of the graph.
 std::vector<int> UberMap::ClosestDrivers(const std::string &name)
 {
+    // Only compute the transpose if needed.
     if (changed_) {
         trans_ = graph_.Transposed();
         changed_ = false;
@@ -138,12 +145,14 @@ std::vector<int> UberMap::ClosestDrivers(const std::string &name)
         auto id = q.front();
         q.pop();
 
+        // Don't search the nodes past the closest level that has drivers.
         if (driver_dist > -1 && dist[id] > driver_dist) {
             continue;
         }
 
+        // Add the drivers found at the current node to the returned list.
         if (!graph_.Data(id).Drivers().empty()) {
-            driver_dist = dist[id];
+            driver_dist = dist[id];  // Save the shortest distance to a driver.
 
             const auto &vec = graph_.Data(id).Drivers();
             drivers.insert(drivers.end(), vec.begin(), vec.end());

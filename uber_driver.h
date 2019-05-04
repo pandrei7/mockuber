@@ -5,6 +5,7 @@
 
 #include <string>
 
+// This class represents an Uber driver.
 class UberDriver
 {
  public:
@@ -33,7 +34,7 @@ class UberDriver
  private:
     std::string name_;
     std::string location_;
-    double rating_;
+    double rating_;  // The average rating (total_rating / number of trips).
     int distance_;
     int trips_;
     bool online_;

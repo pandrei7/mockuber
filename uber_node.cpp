@@ -8,6 +8,7 @@ void UberNode::AddDriver(int id)
 {
     auto it = std::find(drivers_.begin(), drivers_.end(), id);
 
+    // Each driver id is only kept once in the list.
     if (it == drivers_.end()) {
         drivers_.push_back(id);
     }

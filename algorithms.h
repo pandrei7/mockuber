@@ -6,9 +6,15 @@
 #include <utility>
 #include <vector>
 
+// This alias describes a pointer to a generic comparison function.
 template <typename T>
 using CmpFunc = bool (*)(const T &a, const T &b);
 
+// This is a helper function used by Quicksort.
+// It partitions the [left, right) range of a vector into two halves:
+// the left part contains elements smaller than a certain pivot,
+// the right part contains greater elements.
+// The function returns the position of the pivot after the partitioning.
 template <typename T>
 int Partition(std::vector<T> &vec, int left, int right, const CmpFunc<T> &cmp)
 {
@@ -36,6 +42,9 @@ int Partition(std::vector<T> &vec, int left, int right, const CmpFunc<T> &cmp)
     return i - 1;
 }
 
+// This function sorts the elemens in the range [left, right) in ascending
+// order, based on certain criteria. The comparison function cmp needs to
+// return true if the first parameter passed to it should be placed first.
 template <typename T>
 void Quicksort(std::vector<T> &vec, int left, int right, const CmpFunc<T> &cmp)
 {

@@ -9,6 +9,7 @@
 
 #include "./uber_driver.h"
 
+// This function splits a string into tokens separated by spaces.
 static std::vector<std::string> Tokenize(const std::string &str)
 {
     std::vector<std::string> tokens;
@@ -27,6 +28,7 @@ static std::vector<std::string> Tokenize(const std::string &str)
 
 void solver::task1_solver(std::ifstream &fin, std::ofstream &fout)
 {
+    // Read the initial map data.
     int intersections, streets;
     fin >> intersections >> streets;
     fin.get();
@@ -42,6 +44,7 @@ void solver::task1_solver(std::ifstream &fin, std::ofstream &fout)
         app_.AddStreet(a, b);
     }
 
+    // Solve Task 1.
     int queries;
     fin >> queries;
     fin.get();
@@ -114,6 +117,8 @@ static void PrintInfo(const UberDriver &driver, std::ofstream &fout)
     fout << (driver.Online() ? "online" : "offline") << "\n";
 }
 
+// This function prints data about a certain number of drivers,
+// given a query-type from Task 4.
 static void PrintDrivers(const std::vector<UberDriver> &vec, std::size_t num,
                          const std::string &type, std::ofstream &fout)
 {
@@ -141,40 +146,24 @@ void solver::task4_solver(std::ifstream &fin, std::ofstream &fout)
     fin.get();
 
     for (auto i = 0; i < queries; i += 1) {
-        std::string type;
-        fin >> type;
+        std::string line;
+        getline(fin, line);
 
-        if (type == "d") {
-            std::string name, location;
-            fin >> name >> location;
-            app_.GoOnline(name, location);
-        } else if (type == "b") {
-            std::string name;
-            fin >> name;
-            app_.GoOffline(name);
-        } else if (type == "r") {
-            std::string a, b;
-            fin >> a >> b;
-
-            double rating;
-            fin >> rating;
-            fin.get();
-
-            auto message = app_.MakeTrip(a, b, rating);
+        auto tok = Tokenize(line);
+        if (tok[0] == "d") {
+            app_.GoOnline(tok[1], tok[2]);
+        } else if (tok[0] == "b") {
+            app_.GoOffline(tok[1]);
+        } else if (tok[0] == "r") {
+            auto message = app_.MakeTrip(tok[1], tok[2], stod(tok[3]));
             if (!message.empty()) {
                 fout << message << "\n";
             }
-        } else if (type == "info") {
-            std::string name;
-            fin >> name;
-            PrintInfo(app_.Driver(name), fout);
+        } else if (tok[0] == "info") {
+            PrintInfo(app_.Driver(tok[1]), fout);
         } else {
-            int num;
-            fin >> num;
-            fin.get();
-
-            auto drivers = app_.SortedDrivers(type);
-            PrintDrivers(drivers, num, type, fout);
+            auto drivers = app_.SortedDrivers(tok[0]);
+            PrintDrivers(drivers, stoi(tok[1]), tok[0], fout);
         }
     }
 }

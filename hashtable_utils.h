@@ -7,6 +7,8 @@
 #include <cstddef>
 #include <string>
 
+// This class represents a generic "equal-to" operator.
+// When called, it returns the result of the "==" operator.
 template <typename T>
 class Equal
 {
@@ -17,9 +19,13 @@ class Equal
     }
 };
 
+// This class represents a generic "hash-operator".
+// When called, it should return the result of a hash function for a given type.
 template <typename T>
 class Hash;
 
+// This is a specialization of Hash for std::string.
+// It uses the SDBM algorithm to compute hash values.
 template <>
 class Hash<std::string>
 {
@@ -32,16 +38,6 @@ class Hash<std::string>
         }
         return hash;
     }
-};
-
-template <>
-class Hash<int>
-{
- public:
-     std::size_t operator()(int num) const
-     {
-         return std::abs(num);
-     }
 };
 
 #endif  // HASHTABLE_UTILS_H_

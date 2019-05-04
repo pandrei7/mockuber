@@ -46,6 +46,8 @@ void UberDatabase::MakeTrip(const std::string &name, const std::string &dest,
     drivers_[ids_.Get(name)].MakeTrip(dest, distance, rating);
 }
 
+// A "better" driver has a bigger rating. In case two drivers have
+// the same rating, the one with the smaller name is better.
 static bool BetterDriver(const UberDriver &a, const UberDriver &b)
 {
     if (std::abs(a.Rating() - b.Rating()) < 0.0001) {
@@ -60,6 +62,7 @@ std::string UberDatabase::BestDriver(const std::vector<int> &ids) const
     int best_id = -1;
 
     for (const auto &id : ids) {
+        // Only drivers who are online are considered.
         if (!drivers_[id].Online()) {
             continue;
         }
@@ -77,6 +80,5 @@ std::vector<UberDriver> UberDatabase::SortedDrivers(const CmpFunc &cmp) const
     if (cmp) {
         Quicksort(drivers, 0, drivers.size(), cmp);
     }
-
     return drivers;
 }
