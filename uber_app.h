@@ -31,7 +31,7 @@ class UberApp
     std::vector<UberDriver> SortedDrivers(const std::string &mode) const;
 
     std::vector<std::string> SortedByDistance(const std::string &source,
-                                const std::vector<std::string> &dest) const;
+                    const std::vector<std::string> &dest, int max_dist) const;
 
  private:
     UberDatabase database_;

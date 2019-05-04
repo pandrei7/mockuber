@@ -136,14 +136,14 @@ static bool CmpIntersections(const std::pair<std::string, int> &a,
 }
 
 std::vector<std::string> UberApp::SortedByDistance(const std::string &source,
-                                    const std::vector<std::string> &dest) const
+                    const std::vector<std::string> &dest, int max_dist) const
 {
     auto dist = map_.AllDistances(source);
     std::vector<std::pair<std::string, int>> vec;
 
     for (const auto &name : dest) {
         auto id = map_.Id(name);
-        if (dist[id] != -1) {
+        if (dist[id] != -1 && dist[id] <= max_dist) {
             vec.push_back({name, dist[id]});
             dist[id] = -1;
         }

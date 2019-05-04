@@ -23,7 +23,7 @@ TEST_CASE("Distances work correctly")
         REQUIRE(a.Distance("B", "B") == 0);
     }
     SECTION("sorting by distance") {
-        auto sorted = a.SortedByDistance("B", {"B", "C", "B", "A", "A", "C"});
+        auto sorted = a.SortedByDistance("B", {"B", "C", "B", "A", "C"}, 3);
         REQUIRE(sorted.size() == 2);
         REQUIRE(sorted[0] == "B");
         REQUIRE(sorted[1] == "C");
@@ -132,7 +132,7 @@ TEST_CASE("Sortings work correctly")
         REQUIRE(sorted[1].Name() == "Enrique");
     }
     SECTION("sorting by distance") {
-        auto sorted = a.SortedByDistance("B", {"A", "B", "C", "B", "D"});
+        auto sorted = a.SortedByDistance("B", {"A", "B", "C", "B", "D"}, 4);
         REQUIRE(sorted.size() == 3);
         REQUIRE(sorted[0] == "B");
         REQUIRE(sorted[1] == "C");
