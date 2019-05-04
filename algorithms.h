@@ -12,7 +12,7 @@ using CmpFunc = bool (*)(const T &a, const T &b);
 template <typename T>
 int Partition(std::vector<T> &vec, int left, int right, const CmpFunc<T> &cmp)
 {
-    auto mid = left + (right - left) / 2;
+    auto mid = left + (right - 1 - left) / 2;
     std::swap(vec[left], vec[mid]);
 
     auto i = left + 1;
@@ -39,7 +39,7 @@ int Partition(std::vector<T> &vec, int left, int right, const CmpFunc<T> &cmp)
 template <typename T>
 void Quicksort(std::vector<T> &vec, int left, int right, const CmpFunc<T> &cmp)
 {
-    if (left < right) {
+    if (left + 1 < right) {
         auto pos = Partition(vec, left, right, cmp);
         Quicksort(vec, left, pos, cmp);
         Quicksort(vec, pos + 1, right, cmp);
