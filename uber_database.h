@@ -5,16 +5,16 @@
 
 #include <cstddef>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "./hashtable.h"
+#include "./sorted_list.h"
 #include "./uber_driver.h"
 
 class UberDatabase
 {
  public:
-    UberDatabase();
-
     int Id(const std::string &name) const;
 
     UberDriver Driver(const std::string &name) const;
@@ -32,16 +32,15 @@ class UberDatabase
                                           std::size_t count) const;
 
  private:
-    using CmpFunc = bool(*)(const UberDriver &a, const UberDriver &b);
-
-    void UpdateSortings(int id);
-    void Reorder(std::vector<int> &sorted, int id, CmpFunc cmp);
+    void RemoveFromSortings(int id);
+    void AddToSortings(int id);
 
     std::vector<UberDriver> drivers_;
     Hashtable<std::string, int> ids_;
 
-    Hashtable<std::string, std::vector<int>> sorted_ids_;
-    Hashtable<std::string, CmpFunc> cmp_funcs_;
+    SortedList<std::pair<double, std::string>> by_rating_;
+    SortedList<std::pair<double, std::string>> by_dist_;
+    SortedList<std::pair<double, std::string>> by_trips_;
 };
 
 #endif  // UBER_DATABASE_H_

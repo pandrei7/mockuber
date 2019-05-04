@@ -3,46 +3,10 @@
 #include "./uber_database.h"
 
 #include <algorithm>
+#include <list>
 #include <string>
 #include <utility>
 #include <vector>
-
-#include "./algorithms.h"
-
-static bool CmpRating(const UberDriver &a, const UberDriver &b)
-{
-    if (std::abs(a.Rating() - b.Rating()) < 0.0001) {
-        return a.Name() < b.Name();
-    }
-    return a.Rating() > b.Rating();
-}
-
-static bool CmpDistance(const UberDriver &a, const UberDriver &b)
-{
-    if (a.Distance() == b.Distance()) {
-        return a.Name() < b.Name();
-    }
-    return a.Distance() > b.Distance();
-}
-
-static bool CmpTrips(const UberDriver &a, const UberDriver &b)
-{
-    if (a.Trips() == b.Trips()) {
-        return a.Name() < b.Name();
-    }
-    return a.Trips() > b.Trips();
-}
-
-UberDatabase::UberDatabase()
-{
-    sorted_ids_.Put("top_rating", std::vector<int>());
-    sorted_ids_.Put("top_dist", std::vector<int>());
-    sorted_ids_.Put("top_rides", std::vector<int>());
-
-    cmp_funcs_.Put("top_rating", CmpRating);
-    cmp_funcs_.Put("top_dist", CmpDistance);
-    cmp_funcs_.Put("top_rides", CmpTrips);
-}
 
 int UberDatabase::Id(const std::string &name) const
 {
@@ -58,26 +22,20 @@ UberDriver UberDatabase::Driver(const std::string &name) const
     return drivers_[id];
 }
 
-void UberDatabase::Reorder(std::vector<int> &sorted, int id, CmpFunc cmp)
+void UberDatabase::AddToSortings(int id)
 {
-    auto driver = drivers_[id];
-    std::size_t pos = find(sorted.begin(), sorted.end(), id) - sorted.begin();
-
-    while (pos > 0 && cmp(driver, drivers_[sorted[pos - 1]])) {
-        std::swap(sorted[pos], sorted[pos - 1]);
-        pos -= 1;
-    }
-    while (pos + 1 < sorted.size() && cmp(drivers_[sorted[pos + 1]], driver)) {
-        std::swap(sorted[pos], sorted[pos + 1]);
-        pos += 1;
-    }
+    auto name = drivers_[id].Name();
+    by_rating_.Add(std::make_pair(-drivers_[id].Rating(), name));
+    by_dist_.Add(std::make_pair(-drivers_[id].Distance(), name));
+    by_trips_.Add(std::make_pair(-drivers_[id].Trips(), name));
 }
 
-void UberDatabase::UpdateSortings(int id)
+void UberDatabase::RemoveFromSortings(int id)
 {
-    Reorder(sorted_ids_.GetRef("top_rating"), id, cmp_funcs_.Get("top_rating"));
-    Reorder(sorted_ids_.GetRef("top_dist"), id, cmp_funcs_.Get("top_dist"));
-    Reorder(sorted_ids_.GetRef("top_rides"), id, cmp_funcs_.Get("top_rides"));
+    auto name = drivers_[id].Name();
+    by_rating_.Remove(std::make_pair(-drivers_[id].Rating(), name));
+    by_dist_.Remove(std::make_pair(-drivers_[id].Distance(), name));
+    by_trips_.Remove(std::make_pair(-drivers_[id].Trips(), name));
 }
 
 void UberDatabase::GoOnline(const std::string &name,
@@ -88,14 +46,10 @@ void UberDatabase::GoOnline(const std::string &name,
         id = ids_.Size();
         ids_.Put(name, id);
         drivers_.push_back(UberDriver(name));
-
-        sorted_ids_.GetRef("top_rating").push_back(id);
-        sorted_ids_.GetRef("top_dist").push_back(id);
-        sorted_ids_.GetRef("top_rides").push_back(id);
+        AddToSortings(id);
     }
 
     drivers_[id].GoOnline(location);
-    UpdateSortings(id);
 }
 
 void UberDatabase::GoOffline(const std::string &name)
@@ -106,8 +60,11 @@ void UberDatabase::GoOffline(const std::string &name)
 void UberDatabase::MakeTrip(const std::string &name, const std::string &dest,
                                                 int distance, double rating)
 {
-    drivers_[ids_.Get(name)].MakeTrip(dest, distance, rating);
-    UpdateSortings(ids_.Get(name));
+    auto id = ids_.Get(name);
+
+    RemoveFromSortings(id);
+    drivers_[id].MakeTrip(dest, distance, rating);
+    AddToSortings(id);
 }
 
 static bool BetterDriver(const UberDriver &a, const UberDriver &b)
@@ -138,11 +95,19 @@ std::string UberDatabase::BestDriver(const std::vector<int> &ids) const
 std::vector<UberDriver> UberDatabase::SortedDrivers(const std::string &mode,
                                                     std::size_t count) const
 {
-    const auto &sorted = sorted_ids_.Get(mode);
-    std::vector<UberDriver> drivers;
+    std::vector<std::pair<double, std::string>> sorted;
+    if (mode == "top_rating") {
+        sorted = by_rating_.Get(count);
+    } else if (mode == "top_dist") {
+        sorted = by_dist_.Get(count);
+    } else {
+        sorted = by_trips_.Get(count);
+    }
 
-    for (std::size_t i = 0; i < count && i < sorted.size(); i += 1) {
-        drivers.push_back(drivers_[sorted[i]]);
+    std::vector<UberDriver> drivers;
+    for (const auto &p : sorted) {
+        auto id = ids_.Get(p.second);
+        drivers.push_back(drivers_[id]);
     }
     return drivers;
 }
