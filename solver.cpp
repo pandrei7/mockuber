@@ -35,6 +35,7 @@ void solver::task1_solver(std::ifstream &fin, std::ofstream &fout)
         std::string name;
         fin >> name;
         app_.AddIntersection(name);
+        inters_.push_back(name);
     }
     for (auto i = 0; i < streets; i += 1) {
         std::string a, b;
@@ -104,6 +105,11 @@ void solver::task3_solver(std::ifstream &fin, std::ofstream &fout)
             }
         }
     }
+
+    app_.SaveDistances(true);
+    for (const auto &name : inters_) {
+        app_.Distance(name, name);
+    }
 }
 
 static void PrintInfo(const UberDriver &driver, std::ofstream &fout)
@@ -134,8 +140,6 @@ static void PrintDrivers(const std::vector<UberDriver> &vec,
 
 void solver::task4_solver(std::ifstream &fin, std::ofstream &fout)
 {
-    app_.SaveDistances(true);
-
     int queries;
     fin >> queries;
     fin.get();

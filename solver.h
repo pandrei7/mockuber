@@ -23,5 +23,6 @@ class solver {
 
  private:
     UberApp app_;
+    std::vector<std::string> inters_;
 };
 #endif  // SOLVER_H_
